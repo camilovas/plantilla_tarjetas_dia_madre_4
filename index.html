@@ -18,252 +18,187 @@ html, body {
   color: #3a3530;
 }
 
-/* Barra lateral verde */
+/* Barra lateral */
 .side-bar {
-  position: fixed;
-  left: 0; top: 0;
-  width: 5px; height: 100%;
+  position: fixed; left: 0; top: 0;
+  width: 5px; height: 0;
   background: linear-gradient(180deg, #a8c5aa 0%, #527a56 50%, #4a6b4e 100%);
   z-index: 10;
+  transition: height 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
 }
+.side-bar.grown { height: 100%; }
 
-/* Hojas decorativas fijas */
-.leaf-fixed {
-  position: fixed;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.22;
-}
+/* Hojas fijas */
+.leaf-fixed { position: fixed; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 1s ease 0.4s; }
+.leaf-fixed.visible { opacity: 0.22; }
 .leaf-tl { top: 40px;  left: 24px; }
 .leaf-tr { top: 60px;  right: 24px; transform: scaleX(-1); }
 .leaf-bl { bottom: 60px; left: 24px; transform: scaleY(-1); }
 .leaf-br { bottom: 40px; right: 24px; transform: scale(-1); }
 .leaf-fixed svg { width: 50px; height: 70px; }
 
-/* Contenedor */
-.card {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 52px 40px 72px 52px;
-}
+.card { max-width: 520px; margin: 0 auto; padding: 52px 40px 72px 52px; }
 
-/* Cabecera */
+/* Header */
 .header {
   margin-bottom: 40px;
   border-bottom: 1px solid rgba(122,158,126,0.2);
   padding-bottom: 32px;
 }
 .header-tag {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 11px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: #7a9e7e;
-  font-weight: 400;
-  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+  color: #7a9e7e; font-weight: 400; margin-bottom: 16px;
 }
-.header-tag::before {
-  content: '';
-  display: block;
-  width: 28px; height: 1px;
+.header-tag-line {
+  display: block; width: 0; height: 1px;
   background: #7a9e7e;
+  transition: width 1s cubic-bezier(0.22,1,0.36,1) 0.5s;
 }
-.header-h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 58px;
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1.05;
-  color: #3a3530;
-  margin-bottom: 10px;
-}
+.header-tag-line.grown { width: 28px; }
+.header-h1 { font-family: 'Cormorant Garamond', serif; font-size: 58px; font-weight: 300; font-style: italic; line-height: 1.05; color: #3a3530; margin-bottom: 10px; }
 .header-h1 .accent { color: #527a56; }
-.header-sub {
-  font-size: 14px;
-  font-weight: 200;
-  letter-spacing: 2px;
-  color: #5a524a;
-}
+.header-sub { font-size: 14px; font-weight: 200; letter-spacing: 2px; color: #5a524a; }
 
-/* Rama botánica ilustrada */
-.botanical {
-  margin: 0 0 36px -8px;
+/* Rama botánica con draw SVG */
+.botanical { margin: 0 0 36px -8px; }
+.botanical svg { width: 100%; max-width: 420px; height: auto; overflow: visible; }
+.branch-draw {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 0;
 }
-.botanical svg { width: 100%; max-width: 420px; height: auto; }
+.js-ready .branch-draw {
+  stroke-dashoffset: 900;
+  transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.js-ready .botanical.in-view .branch-draw { stroke-dashoffset: 0; }
+.branch-draw-2 {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 0;
+}
+.js-ready .branch-draw-2 {
+  stroke-dashoffset: 400;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1) 0.5s;
+}
+.js-ready .botanical.in-view .branch-draw-2 { stroke-dashoffset: 0; }
+
+/* Flores que aparecen después del draw */
+.bot-flower { transition: opacity 0.6s ease; }
+.js-ready .bot-flower { opacity: 0; }
+.js-ready .botanical.in-view .bot-flower { opacity: 1; }
+.js-ready .botanical.in-view .bot-flower:nth-child(1) { transition-delay: 1.2s; }
+.js-ready .botanical.in-view .bot-flower:nth-child(2) { transition-delay: 1.6s; }
+.js-ready .botanical.in-view .bot-flower:nth-child(3) { transition-delay: 2.0s; }
 
 /* Foto */
 .photo-section {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  margin-bottom: 36px;
-  padding: 24px;
+  display: flex; align-items: center; gap: 28px;
+  margin-bottom: 36px; padding: 24px;
   background: rgba(255,255,255,0.55);
   border: 1px solid rgba(122,158,126,0.2);
 }
 .photo-ring {
-  flex-shrink: 0;
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  border: 1.5px solid #7a9e7e;
+  flex-shrink: 0; width: 130px; height: 130px;
+  border-radius: 50%; border: 1.5px solid #7a9e7e;
   box-shadow: 0 0 0 6px rgba(122,158,126,0.08), 0 4px 16px rgba(82,122,86,0.12);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
   background: rgba(168,197,170,0.12);
 }
-.photo-ring img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-.photo-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  color: rgba(58,53,48,0.35);
-  text-align: center;
-  padding: 12px;
-}
+.photo-ring img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+.photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 7px; color: rgba(58,53,48,0.35); text-align: center; padding: 12px; }
 .photo-placeholder svg { width: 28px; height: 28px; }
 .photo-placeholder span { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; line-height: 1.4; }
 .photo-meta { flex: 1; }
-.photo-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 20px;
-  color: #527a56;
-  margin-bottom: 4px;
-}
-.photo-sublabel {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(58,53,48,0.4);
-  font-weight: 300;
-}
+.photo-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #527a56; margin-bottom: 4px; }
+.photo-sublabel { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(58,53,48,0.4); font-weight: 300; }
 
 /* Mensaje */
-.message {
-  margin-bottom: 36px;
-}
-.message p {
-  font-size: 16.5px;
-  line-height: 1.92;
-  font-weight: 300;
-  color: #5a524a;
-  margin-bottom: 16px;
-}
+.message { margin-bottom: 36px; }
+.message p { font-size: 16.5px; line-height: 1.92; font-weight: 300; color: #5a524a; margin-bottom: 16px; }
 .message p:last-child { margin-bottom: 0; }
-.message .highlight {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 20px;
-  color: #527a56;
-  display: block;
-  margin: 20px 0;
-  padding-left: 18px;
-  border-left: 2px solid #c4878a;
-}
+.message .highlight { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: #527a56; display: block; margin: 20px 0; padding-left: 18px; border-left: 2px solid #c4878a; }
 
-/* Rama divisora */
-.branch-sep {
-  margin: 28px 0;
-}
+/* Divisor */
+.branch-sep { margin: 28px 0; }
 .branch-sep svg { width: 100%; height: 28px; }
+.sep-line {
+  stroke-dasharray: 500; stroke-dashoffset: 0;
+}
+.js-ready .sep-line { stroke-dashoffset: 500; transition: stroke-dashoffset 1s ease; }
+.js-ready .branch-sep.in-view .sep-line { stroke-dashoffset: 0; }
 
-/* Grid de cualidades */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 36px;
-}
+/* Grid */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 36px; }
 .grid-item {
-  padding: 16px 18px;
-  border: 1px solid rgba(122,158,126,0.22);
-  background: rgba(255,255,255,0.5);
-  position: relative;
+  padding: 16px 18px; border: 1px solid rgba(122,158,126,0.22);
+  background: rgba(255,255,255,0.5); position: relative;
 }
-.grid-item::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: #a8c5aa;
-}
-.gi-label {
-  font-size: 9.5px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #7a9e7e;
-  margin-bottom: 5px;
-  font-weight: 400;
-}
-.gi-value {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 21px;
-  color: #3a3530;
-}
+.grid-item::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: #a8c5aa; }
+.gi-label { font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase; color: #7a9e7e; margin-bottom: 5px; font-weight: 400; }
+.gi-value { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 21px; color: #3a3530; }
 
 /* Cierre */
-.closing {
-  padding: 24px 0;
-  border-top: 1px solid rgba(122,158,126,0.15);
-  border-bottom: 1px solid rgba(122,158,126,0.15);
-  margin-bottom: 28px;
-}
-.closing-quote {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 300;
-  color: #3a3530;
-  line-height: 1.55;
-  margin-bottom: 18px;
-}
-.closing-sig {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
+.closing { padding: 24px 0; border-top: 1px solid rgba(122,158,126,0.15); border-bottom: 1px solid rgba(122,158,126,0.15); margin-bottom: 28px; }
+.closing-quote { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; font-weight: 300; color: #3a3530; line-height: 1.55; margin-bottom: 18px; }
+.closing-sig { display: flex; align-items: center; gap: 14px; }
 .sig-dot { width: 7px; height: 7px; border-radius: 50%; background: #7a9e7e; flex-shrink: 0; }
 .sig-text { font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: #5a524a; font-weight: 300; }
 
 /* Footer */
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+.footer { display: flex; align-items: center; justify-content: space-between; }
 .footer-left { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(58,53,48,0.32); font-weight: 300; }
 .footer-heart { color: #c4878a; font-size: 16px; }
 .footer-right { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: rgba(82,122,86,0.45); }
+
+/* ─── SISTEMA DE ANIMACIÓN ─────────────────────────────── */
+.js-ready [data-anim] {
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-duration: 0.85s;
+}
+.js-ready [data-anim="fade-up"]      { opacity: 0; transform: translateY(26px); }
+.js-ready [data-anim="fade-left"]    { opacity: 0; transform: translateX(-24px); }
+.js-ready [data-anim="scale-bloom"]  { opacity: 0; transform: scale(0.82); }
+.js-ready [data-anim="stagger-up"]   { opacity: 0; transform: translateY(20px); }
+
+.js-ready [data-anim].in-view { opacity: 1 !important; transform: none !important; }
+
+[data-delay="1"] { transition-delay: 0.1s; }
+[data-delay="2"] { transition-delay: 0.22s; }
+[data-delay="3"] { transition-delay: 0.36s; }
+[data-delay="4"] { transition-delay: 0.50s; }
+[data-delay="5"] { transition-delay: 0.66s; }
+[data-delay="6"] { transition-delay: 0.82s; }
+[data-delay="7"] { transition-delay: 1.0s; }
+[data-delay="8"] { transition-delay: 1.2s; }
+
+/* Pulso continuo en el punto de la firma */
+@keyframes pulse-dot {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.6); opacity: 0.5; }
+}
+.sig-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* Hover suave en grid items */
+.grid-item { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.grid-item:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(82,122,86,0.12); }
 </style>
 </head>
 <body>
 
-<div class="side-bar"></div>
+<div class="side-bar" id="sideBar"></div>
 
-<!-- Hojas fijas decorativas -->
-<div class="leaf-fixed leaf-tl">
+<div class="leaf-fixed leaf-tl" id="leafTl">
   <svg viewBox="0 0 50 70" xmlns="http://www.w3.org/2000/svg">
     <path d="M25,68 Q5,40 25,4 Q45,40 25,68Z" fill="#7a9e7e"/>
     <line x1="25" y1="4" x2="25" y2="68" stroke="#527a56" stroke-width="1"/>
     <path d="M25,30 Q15,26 10,18" stroke="#527a56" stroke-width="0.8" fill="none"/>
     <path d="M25,30 Q35,26 40,18" stroke="#527a56" stroke-width="0.8" fill="none"/>
-    <path d="M25,48 Q14,43 8,34" stroke="#527a56" stroke-width="0.8" fill="none"/>
+    <path d="M25,48 Q14,43 8,34"  stroke="#527a56" stroke-width="0.8" fill="none"/>
     <path d="M25,48 Q36,43 42,34" stroke="#527a56" stroke-width="0.8" fill="none"/>
   </svg>
 </div>
-<div class="leaf-fixed leaf-tr">
+<div class="leaf-fixed leaf-tr" id="leafTr">
   <svg viewBox="0 0 50 70" xmlns="http://www.w3.org/2000/svg">
     <path d="M25,68 Q5,40 25,4 Q45,40 25,68Z" fill="#a8c5aa"/>
     <line x1="25" y1="4" x2="25" y2="68" stroke="#7a9e7e" stroke-width="1"/>
@@ -271,13 +206,13 @@ html, body {
     <path d="M25,30 Q35,26 40,18" stroke="#7a9e7e" stroke-width="0.8" fill="none"/>
   </svg>
 </div>
-<div class="leaf-fixed leaf-bl">
+<div class="leaf-fixed leaf-bl" id="leafBl">
   <svg viewBox="0 0 50 70" xmlns="http://www.w3.org/2000/svg">
     <path d="M25,68 Q5,40 25,4 Q45,40 25,68Z" fill="#7a9e7e"/>
     <line x1="25" y1="4" x2="25" y2="68" stroke="#527a56" stroke-width="1"/>
   </svg>
 </div>
-<div class="leaf-fixed leaf-br">
+<div class="leaf-fixed leaf-br" id="leafBr">
   <svg viewBox="0 0 50 70" xmlns="http://www.w3.org/2000/svg">
     <path d="M25,68 Q5,40 25,4 Q45,40 25,68Z" fill="#a8c5aa"/>
     <line x1="25" y1="4" x2="25" y2="68" stroke="#7a9e7e" stroke-width="1"/>
@@ -286,63 +221,60 @@ html, body {
 
 <div class="card">
 
-  <!-- Cabecera -->
-  <div class="header">
-    <div class="header-tag">Mother's Day · 2026</div>
+  <div class="header" data-anim="fade-left">
+    <div class="header-tag">
+      <span class="header-tag-line" id="tagLine"></span>
+      Mother's Day · 2026
+    </div>
     <h1 class="header-h1">Garden<br>of <span class="accent">Love</span></h1>
     <p class="header-sub">A botanical letter for the one who grew me</p>
   </div>
 
-  <!-- Ilustración botánica -->
-  <div class="botanical">
+  <div class="botanical" data-anim="fade-up" data-delay="1">
     <svg viewBox="0 0 420 130" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10,110 Q90,70 180,55 Q270,40 410,32" stroke="#527a56" stroke-width="2" fill="none"/>
-      <path d="M80,98  Q72,72 68,52"  stroke="#7a9e7e" stroke-width="1.3" fill="none"/>
-      <path d="M160,70 Q156,48 150,28" stroke="#7a9e7e" stroke-width="1.3" fill="none"/>
-      <path d="M260,48 Q262,28 256,8"  stroke="#527a56" stroke-width="1.3" fill="none"/>
-      <path d="M360,36 Q364,18 356,2"  stroke="#7a9e7e" stroke-width="1.3" fill="none"/>
+      <!-- Rama principal — animada con draw -->
+      <path class="branch-draw" d="M10,110 Q90,70 180,55 Q270,40 410,32" stroke="#527a56" stroke-width="2" fill="none"/>
+      <!-- Ramas secundarias -->
+      <path class="branch-draw-2" d="M80,98 Q72,72 68,52 M160,70 Q156,48 150,28 M260,48 Q262,28 256,8 M360,36 Q364,18 356,2" stroke="#7a9e7e" stroke-width="1.3" fill="none"/>
       <!-- Hojas -->
-      <path d="M68,52 Q55,40 66,26 Q80,38 68,52Z" fill="#7a9e7e" opacity="0.85"/>
-      <path d="M68,52 Q82,43 88,30 Q74,36 68,52Z" fill="#527a56" opacity="0.7"/>
+      <path d="M68,52 Q55,40 66,26 Q80,38 68,52Z"   fill="#7a9e7e" opacity="0.85"/>
+      <path d="M68,52 Q82,43 88,30 Q74,36 68,52Z"   fill="#527a56" opacity="0.7"/>
       <path d="M150,28 Q136,16 148,2 Q162,14 150,28Z" fill="#a8c5aa" opacity="0.85"/>
       <path d="M150,28 Q164,20 170,6 Q156,12 150,28Z" fill="#7a9e7e" opacity="0.7"/>
-      <path d="M256,8 Q242,-4 254,-18 Q268,-6 256,8Z" fill="#7a9e7e" opacity="0.8"/>
-      <path d="M256,8 Q270,0 276,-14 Q262,-8 256,8Z" fill="#527a56" opacity="0.65"/>
+      <path d="M256,8 Q242,-4 254,-18 Q268,-6 256,8Z"  fill="#7a9e7e" opacity="0.8"/>
+      <path d="M256,8 Q270,0 276,-14 Q262,-8 256,8Z"   fill="#527a56" opacity="0.65"/>
       <path d="M356,2 Q342,-10 354,-24 Q368,-12 356,2Z" fill="#a8c5aa" opacity="0.75"/>
-      <!-- Flores -->
-      <g transform="translate(80,92)">
-        <circle cx="0" cy="0" r="10" fill="#f0d0d2" opacity="0.9"/>
-        <circle cx="0" cy="0" r="5"  fill="#c4878a"/>
-        <circle cx="0" cy="0" r="2"  fill="#fff" opacity="0.85"/>
-        <ellipse cx="-12" cy="0" rx="8" ry="5" fill="#f0d0d2" opacity="0.75"/>
-        <ellipse cx="12"  cy="0" rx="8" ry="5" fill="#f0d0d2" opacity="0.75"/>
-        <ellipse cx="0" cy="-12" rx="5" ry="8" fill="#e8c0c2" opacity="0.75"/>
-        <ellipse cx="0" cy="12"  rx="5" ry="8" fill="#f0d0d2" opacity="0.65"/>
+      <!-- Flores (aparecen tras el draw) -->
+      <g class="bot-flower">
+        <circle cx="80" cy="92" r="10" fill="#f0d0d2" opacity="0.9"/>
+        <circle cx="80" cy="92" r="5"  fill="#c4878a"/>
+        <circle cx="80" cy="92" r="2"  fill="#fff" opacity="0.85"/>
+        <ellipse cx="68"  cy="92" rx="8" ry="5" fill="#f0d0d2" opacity="0.75"/>
+        <ellipse cx="92"  cy="92" rx="8" ry="5" fill="#f0d0d2" opacity="0.75"/>
+        <ellipse cx="80" cy="80"  rx="5" ry="8" fill="#e8c0c2" opacity="0.75"/>
+        <ellipse cx="80" cy="104" rx="5" ry="8" fill="#f0d0d2" opacity="0.65"/>
       </g>
-      <g transform="translate(260,42)">
-        <circle cx="0" cy="0" r="12" fill="#f0d0d2" opacity="0.85"/>
-        <circle cx="0" cy="0" r="6"  fill="#c4878a"/>
-        <circle cx="0" cy="0" r="3"  fill="#fff" opacity="0.85"/>
-        <ellipse cx="-14" cy="0" rx="9" ry="5" fill="#f0d0d2" opacity="0.75"/>
-        <ellipse cx="14"  cy="0" rx="9" ry="5" fill="#f0d0d2" opacity="0.75"/>
-        <ellipse cx="0" cy="-14" rx="5" ry="9" fill="#e8c0c2" opacity="0.75"/>
-        <ellipse cx="0" cy="14"  rx="5" ry="9" fill="#f0d0d2" opacity="0.65"/>
+      <g class="bot-flower">
+        <circle cx="260" cy="42" r="12" fill="#f0d0d2" opacity="0.85"/>
+        <circle cx="260" cy="42" r="6"  fill="#c4878a"/>
+        <circle cx="260" cy="42" r="3"  fill="#fff" opacity="0.85"/>
+        <ellipse cx="246" cy="42" rx="9" ry="5" fill="#f0d0d2" opacity="0.75"/>
+        <ellipse cx="274" cy="42" rx="9" ry="5" fill="#f0d0d2" opacity="0.75"/>
+        <ellipse cx="260" cy="28" rx="5" ry="9" fill="#e8c0c2" opacity="0.75"/>
+        <ellipse cx="260" cy="56" rx="5" ry="9" fill="#f0d0d2" opacity="0.65"/>
       </g>
-      <g transform="translate(410,28)">
-        <circle cx="0" cy="0" r="9"  fill="#e8c0c2" opacity="0.9"/>
-        <circle cx="0" cy="0" r="5"  fill="#b8725a"/>
-        <circle cx="0" cy="0" r="2"  fill="#fff" opacity="0.85"/>
-        <ellipse cx="-11" cy="0" rx="7" ry="4" fill="#f0d0d2" opacity="0.7"/>
-        <ellipse cx="11"  cy="0" rx="7" ry="4" fill="#f0d0d2" opacity="0.7"/>
-        <ellipse cx="0" cy="-11" rx="4" ry="7" fill="#e8c0c2" opacity="0.7"/>
+      <g class="bot-flower">
+        <circle cx="410" cy="28" r="9"  fill="#e8c0c2" opacity="0.9"/>
+        <circle cx="410" cy="28" r="5"  fill="#b8725a"/>
+        <circle cx="410" cy="28" r="2"  fill="#fff" opacity="0.85"/>
+        <ellipse cx="399" cy="28" rx="7" ry="4" fill="#f0d0d2" opacity="0.7"/>
+        <ellipse cx="421" cy="28" rx="7" ry="4" fill="#f0d0d2" opacity="0.7"/>
+        <ellipse cx="410" cy="17" rx="4" ry="7" fill="#e8c0c2" opacity="0.7"/>
       </g>
-      <circle cx="160" cy="65"  r="3" fill="#c4878a" opacity="0.7"/>
-      <circle cx="360" cy="32"  r="2" fill="#7a9e7e" opacity="0.8"/>
     </svg>
   </div>
 
-  <!-- Foto + etiqueta -->
-  <div class="photo-section">
+  <div class="photo-section" data-anim="scale-bloom" data-delay="2">
     <div class="photo-ring">
       <div class="photo-placeholder">
         <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
@@ -358,18 +290,16 @@ html, body {
     </div>
   </div>
 
-  <!-- Mensaje principal -->
   <div class="message">
-    <p>You are the first garden I ever knew — every lesson a seed, every embrace a season of bloom. Long before I understood what love meant, I already lived inside it.</p>
-    <span class="highlight">"You are the reason I know how to be soft and strong at once."</span>
-    <p>Today I want to give back, even if just in words, a fraction of the warmth you have poured into my life without ever asking for anything in return.</p>
+    <p data-anim="fade-up" data-delay="1">You are the first garden I ever knew — every lesson a seed, every embrace a season of bloom. Long before I understood what love meant, I already lived inside it.</p>
+    <span class="highlight" data-anim="fade-left" data-delay="2">"You are the reason I know how to be soft and strong at once."</span>
+    <p data-anim="fade-up" data-delay="3">Today I want to give back, even if just in words, a fraction of the warmth you have poured into my life without ever asking for anything in return.</p>
   </div>
 
-  <!-- Divisor de ramas -->
-  <div class="branch-sep">
+  <div class="branch-sep" data-anim="fade-up">
     <svg viewBox="0 0 440 28" xmlns="http://www.w3.org/2000/svg">
-      <line x1="0" y1="14" x2="190" y2="14" stroke="#a8c5aa" stroke-width="0.8"/>
-      <line x1="250" y1="14" x2="440" y2="14" stroke="#a8c5aa" stroke-width="0.8"/>
+      <line class="sep-line" x1="0" y1="14" x2="190" y2="14" stroke="#a8c5aa" stroke-width="0.8"/>
+      <line class="sep-line" x1="250" y1="14" x2="440" y2="14" stroke="#a8c5aa" stroke-width="0.8"/>
       <g transform="translate(220,14)">
         <path d="M-20,-6 Q-8,-12 0,-6 Q8,-12 20,-6" stroke="#527a56" stroke-width="1.3" fill="none"/>
         <circle cx="0" cy="-10" r="4" fill="#c4878a" opacity="0.85"/>
@@ -378,28 +308,26 @@ html, body {
     </svg>
   </div>
 
-  <!-- Grid -->
   <div class="grid">
-    <div class="grid-item">
+    <div class="grid-item" data-anim="stagger-up" data-delay="1">
       <div class="gi-label">She gave me</div>
       <div class="gi-value">Roots</div>
     </div>
-    <div class="grid-item">
+    <div class="grid-item" data-anim="stagger-up" data-delay="2">
       <div class="gi-label">She gave me</div>
       <div class="gi-value">Wings</div>
     </div>
-    <div class="grid-item">
+    <div class="grid-item" data-anim="stagger-up" data-delay="3">
       <div class="gi-label">She is my</div>
       <div class="gi-value">Safe Place</div>
     </div>
-    <div class="grid-item">
+    <div class="grid-item" data-anim="stagger-up" data-delay="4">
       <div class="gi-label">She is my</div>
       <div class="gi-value">First Home</div>
     </div>
   </div>
 
-  <!-- Cierre -->
-  <div class="closing">
+  <div class="closing" data-anim="fade-up" data-delay="2">
     <p class="closing-quote">"Thank you for being the garden where I first learned to grow."</p>
     <div class="closing-sig">
       <div class="sig-dot"></div>
@@ -407,13 +335,42 @@ html, body {
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-anim="fade-up" data-delay="3">
     <div class="footer-left">Mother's Day · 2026</div>
     <div class="footer-heart">♥</div>
     <div class="footer-right">Postales para Mamá</div>
   </div>
 
 </div>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js-ready');
+
+  // Crecer barra lateral y hojas
+  requestAnimationFrame(function () {
+    document.getElementById('sideBar').classList.add('grown');
+    ['leafTl','leafTr','leafBl','leafBr'].forEach(function(id) {
+      document.getElementById(id).classList.add('visible');
+    });
+    var line = document.getElementById('tagLine');
+    if (line) setTimeout(function(){ line.classList.add('grown'); }, 300);
+  });
+
+  // IntersectionObserver para animar al hacer scroll
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('[data-anim]').forEach(function (el) {
+    observer.observe(el);
+  });
+})();
+</script>
 </body>
 </html>
